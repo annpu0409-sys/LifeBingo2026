@@ -125,7 +125,7 @@
               50% { transform: scale(1.1); }
               100% { transform: scale(1); }
           }
-        footer {
+          footer {
                 text-align: center;
                 padding: 20px;
                 font-size: 14px;
@@ -142,6 +142,37 @@
 
             footer a:hover {
                 border-bottom: 1px solid #f39c12;
+            }
+            .controls button {
+                padding: 10px 20px;
+                margin: 5px;
+                cursor: pointer;
+                border: none;
+                border-radius: 5px;
+                font-weight: bold;
+            }
+            .clear-btn-container {
+                width: 100%;
+                display: flex;
+                justify-content: center; /* 水平置中 */
+                margin: 10px 0 20px 0;   /* 上下留點距離 */
+            }
+
+            /* 清除按鈕專用顏色 */
+            button[onclick="clearAllGoals()"] {
+                background-color: #c0392b;
+                color: #fff;
+                border: 1px solid #c0392b;
+                padding: 8px 16px;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: bold;
+                transition: 0.3s;
+            }
+
+            button[onclick="clearAllGoals()"]:hover {
+                background-color: #c0392b;
+                color: white;
             }
         
     </style>
@@ -205,14 +236,18 @@
             <input type="text" class="goal-input" data-index="23" placeholder="萬事如意">
         </div>
     </div>
+        <div class="clear-btn-container">
+            <button onclick="clearAllGoals()">清除所有目標</button> 
+        </div>
     </div>
+
       <p class="description">點擊下方方格標記達成，再次點擊取消。</p>
       
           <div id="bingo-board" class="bingo-grid"></div>
               
     <div style="display: flex; gap: 10px;">
-       <!-- <button onclick="saveProgress()">💾 儲存進度</button> -->
-        <button onclick="exportImage()" style="background: #e67e22;">🖼️ 匯出圖片下載</button>
+        <!--<button onclick="saveProgress()">💾 儲存進度</button>-->
+        <button onclick="exportImage()" style="background: #e67e22;">🖼️ 匯出圖片下載</button> 
     </div>
     
     <footer>
@@ -221,7 +256,7 @@
             <a href="https://note.com/keitauehara/n/ne86ee870f37c">うえはらけいた</a>
         </div>
     </footer>  
-    
+
     <canvas id="export-canvas" style="display:none;"></canvas>
    
     <script>
@@ -487,6 +522,34 @@
                     context.fillText(lines[k], x, startY + (k * lineHeight));
                 }
             }
+            function clearAllGoals() {
+                    // 1. 彈出確認視窗，避免誤按
+                        if (!confirm("確定要清除所有目標並重新開始嗎？")) return;
+
+                    // 2. 清空資料陣列
+                        for (let i = 0; i < goals.length; i++) {
+                            goals[i] = "-----"; 
+                            completed[i] = false; 
+                        }
+
+                    // 3. 清空輸入框內容
+                        const inputs = document.querySelectorAll('.goal-input');
+                        inputs.forEach(input => {
+                            input.value = ""; 
+                        });
+
+                    // 4. 重點修正：呼叫 createBoard() 而不是 drawBingo()
+                        createBoard(); 
+                        
+                    // 5. 同步清除瀏覽器快取紀錄
+                        saveToLocal();
+                        
+                    // 重設連線紀錄，避免舊連線干擾下次噴煙火
+                        wonLines = [];
+
+                        alert("已全部清除！");
+                    
+                }
             
             
             window.onload = () => {
@@ -498,8 +561,4 @@
              
     </script>
 </body>
-
 </html>
-
-
-
