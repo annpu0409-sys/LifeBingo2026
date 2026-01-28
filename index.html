@@ -125,6 +125,24 @@
               50% { transform: scale(1.1); }
               100% { transform: scale(1); }
           }
+        footer {
+                text-align: center;
+                padding: 20px;
+                font-size: 14px;
+                color: #888;
+                font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+            }
+
+            footer a {
+                color: #f39c12; /* 使用與賓果盤一致的橘色 */
+                text-decoration: none;
+                border-bottom: 1px solid transparent;
+                transition: 0.3s;
+            }
+
+            footer a:hover {
+                border-bottom: 1px solid #f39c12;
+            }
         
     </style>
 </head>
@@ -196,6 +214,13 @@
        <!-- <button onclick="saveProgress()">💾 儲存進度</button> -->
         <button onclick="exportImage()" style="background: #e67e22;">🖼️ 匯出圖片下載</button>
     </div>
+    
+    <footer>
+        <div class="footer-content">
+            <span>Made with ✨ inspired by </span>
+            <a href="https://note.com/keitauehara/n/ne86ee870f37c">うえはらけいた</a>
+        </div>
+    </footer>  
     
     <canvas id="export-canvas" style="display:none;"></canvas>
    
@@ -475,3 +500,4 @@
 </body>
 
 </html>
+
